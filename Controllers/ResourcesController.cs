@@ -16,11 +16,14 @@ namespace lancer_resources_backend.Controllers
     [Route("[controller]")]
     public class ResourcesController : ControllerBase
     {
+        private readonly ILogger<ResourcesController> _logger;
         private readonly string _googleApiKey;
 
         public ResourcesController(ILogger<ResourcesController> logger)
         {
             Env.Load();
+
+            _logger = logger;
             _googleApiKey = Environment.GetEnvironmentVariable("GOOGLE_API_KEY");
             
         }
