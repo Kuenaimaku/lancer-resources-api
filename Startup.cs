@@ -26,12 +26,15 @@ namespace lancer_resources_backend
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
+            services.AddCors(options =>
             {
-                builder.AllowAnyOrigin()
-                       .AllowAnyMethod()
-                       .AllowAnyHeader();
-            }));
+                options.AddPolicy("CorsPolicy",
+                    builder => builder
+                        .AllowAnyMethod()
+                        .AllowCredentials()
+                        .SetIsOriginAllowed((host) => true)
+                        .AllowAnyHeader());
+            });
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -50,7 +53,7 @@ namespace lancer_resources_backend
             }
 
             app.UseRouting();
-            app.UseCors();
+            app.UseCors("CorsPolicy");
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
