@@ -44,16 +44,17 @@ namespace lancer_resources_backend.Controllers
             googleSheetResponse.Values.RemoveAt(0);
             var response = new List<Resource>();
 
-            foreach (var row in googleSheetResponse.Values)
+            foreach (var row in googleSheetResponse.Values.Select((value, index) => new {value, index}))
             {
                 var resource = new Resource
                 {
-                    Title = row[0],
-                    Author = row[1],
-                    URL = row[2],
-                    Description = row[3],
-                    Image = row[4],
-                    Tags = row[5].Split(",").Select(x => x.Trim()).ToList()
+                    ResourceId = row.index,
+                    Title = row.value[0],
+                    Author = row.value[1],
+                    URL = row.value[2],
+                    Description = row.value[3],
+                    Image = row.value[4],
+                    Tags = row.value[5].Split(",").Select(x => x.Trim()).ToList()
                 };
 
                 response.Add(resource);
