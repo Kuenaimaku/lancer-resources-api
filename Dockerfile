@@ -4,6 +4,7 @@ FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
 WORKDIR /app
 ENV ASPNETCORE_URLS=https://+:8080
 EXPOSE 8080
+EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
@@ -19,4 +20,4 @@ RUN dotnet publish "lancer-resources-backend.csproj" -c Release -o /app/publish
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "lancer-resources-backend.dll", "--server.urls", "https://+:8080"]
+ENTRYPOINT ["dotnet", "lancer-resources-backend.dll", "--server.urls", "http://+:8080"]
